@@ -1,0 +1,55 @@
+{% extends "layout.html" %}
+{% block content %}
+<div class="row justify-content-center">
+  <div class="col-md-7">
+    <!-- Social Media Post Card -->
+    <div class="card shadow-sm mb-4">
+      <div class="card-body pb-2">
+        <div class="d-flex align-items-center mb-3">
+          <img src="{{ url_for('static', filename='profile.jpg') }}" alt="User" width="48" height="48" class="rounded-circle me-3 border" onerror="this.style.display='none'">
+          <div>
+            <span class="fw-bold">John Doe</span>
+            <span class="text-muted ms-2" style="font-size: 0.95em;">@johndoe · 1 min ago</span>
+          </div>
+        </div>
+        <div class="mb-3 d-flex">
+          <img src="{{ url_for('static', filename='image.png') }}" class="rounded me-3 border" style="width: 110px; height: 110px; object-fit: cover;" alt="Post image">
+          <div>
+            <h5 class="mb-2">Welcome to the XSS Challenge!</h5>
+            <p class="mb-1">This post is part of a security challenge. Try to find and exploit XSS vulnerabilities in the comments below!</p>
+          </div>
+        </div>
+      </div>
+      <div class="card-footer bg-white pt-3 pb-3">
+        <form method="POST" class="d-flex align-items-center">
+          <img src="{{ url_for('static', filename='profile.png') }}" alt="User" width="36" height="36" class="rounded-circle me-2 border" onerror="this.style.display='none'">
+          <input name="comment" class="form-control me-2" placeholder="Add a public comment..." required autocomplete="off">
+          <button class="btn btn-primary px-3">Post</button>
+        </form>
+      </div>
+    </div>
+    <!-- Comments Section -->
+    <div class="card shadow-sm">
+      <div class="card-header bg-light fw-bold py-2">
+        Comments
+      </div>
+      <ul class="list-group list-group-flush">
+        {% for c in comments %}
+          <li class="list-group-item py-3">
+            <div class="d-flex align-items-start">
+              <img src="{{ url_for('static', filename='profile.png') }}" alt="User" width="32" height="32" class="rounded-circle me-2 border" onerror="this.style.display='none'">
+              <div>
+                <span class="fw-semibold">Anonymous</span>
+                <span class="text-muted ms-2" style="font-size:0.92em;">just now</span>
+                <div class="mt-1" style="word-break:break-word;">{{ c|safe }}</div>
+              </div>
+            </div>
+          </li>
+        {% else %}
+          <li class="list-group-item text-muted py-3">No comments yet. Be the first to comment!</li>
+        {% endfor %}
+      </ul>
+    </div>
+  </div>
+</div>
+{% endblock %}

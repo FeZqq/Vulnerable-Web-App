@@ -1,0 +1,76 @@
+{% extends "layout.html" %}
+{% block content %}
+<div class="row">
+  <!-- Ürünler -->
+  <div class="col-md-7">
+    <div class="card shadow-sm mb-4">
+      <div class="card-header bg-info text-white fw-bold">Products</div>
+      <div class="card-body">
+        <div class="row">
+          {% for p in products %}
+          <div class="col-md-6 mb-3">
+            <div class="card h-100">
+              <div class="card-body">
+                <h5 class="card-title">{{ p.name }}</h5>
+                <p class="card-text text-muted">{{ p.category }}</p>
+                <p class="card-text"><b>Price:</b> ${{ p.price }}</p>
+                <form method="POST" class="add-to-cart-form">
+                  <input type="hidden" name="action" value="add">
+                  <input type="hidden" name="product_id" value="{{ p.id }}">
+                  <input type="hidden" name="name" value="{{ p.name }}">
+                  <input type="hidden" name="price" value="{{ p.price }}">
+                  <div class="mb-2">
+                    <label class="form-label mb-0">Quantity:</label>
+                    <input type="number" name="quantity" class="form-control form-control-sm" value="1" min="1">
+                  </div>
+                  <button class="btn btn-success btn-sm w-100">Add to Cart</button>
+                </form>
+              </div>
+            </div>
+          </div>
+          {% endfor %}
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- Sepet -->
+  <div class="col-md-5">
+    <div class="card shadow-sm mb-4">
+      <div class="card-header bg-warning fw-bold">Cart</div>
+      <div class="card-body">
+        {% if cart and cart|length > 0 %}
+        <ul class="list-group mb-3">
+          {% for item in cart %}
+            <li class="list-group-item d-flex justify-content-between align-items-center">
+              <div>
+                <b>{{ item.name }}</b>
+                <span class="text-muted" style="font-size:0.95em;">x{{ item.quantity }}</span>
+                <div style="font-size:0.9em;">${{ item.price }} each</div>
+              </div>
+              <span class="fw-bold">${{ '%.2f' % (item.price|float * item.quantity|int) }}</span>
+            </li>
+          {% endfor %}
+        </ul>
+        <div class="d-flex justify-content-between align-items-center mb-3">
+          <span class="fw-bold">Total:</span>
+          <span class="fw-bold text-primary">${{ '%.2f' % total }}</span>
+        </div>
+        <form method="POST">
+          <input type="hidden" name="action" value="checkout">
+          <button class="btn btn-primary w-100">Checkout</button>
+        </form>
+        {% else %}
+        <div class="alert alert-info mb-0">Your cart is empty.</div>
+        {% endif %}
+        {% if message %}
+        <div class="alert alert-success mt-3">{{ message }}</div>
+        {% endif %}
+      </div>
+    </div>
+    <div class="alert alert-warning">
+      <b>Business Logic Flaw:</b> Price and quantity are hidden in the form and can be changed with Burp Suite or similar tools.<br>
+      Try to make your total negative or free by intercepting the request!
+    </div>
+  </div>
+</div>
+{% endblock %}

@@ -1,0 +1,41 @@
+{% extends "layout.html" %}
+{% block content %}
+<div class="card shadow-sm mb-4">
+  <div class="card-body">
+    <h4 class="mb-3">SSRF - Agreements Viewer</h4>
+
+    <form id="ssrfForm">
+      <input type="hidden" name="url" value="http://127.0.0.1:5000/aggrements">
+      <button type="submit" class="btn btn-primary">Show Agreements</button>
+    </form>
+
+    <div id="result" class="mt-4 border p-3 rounded" style="background-color:#f8f9fa; max-height:400px; overflow:auto; white-space: pre-wrap;">
+      <!-- İçerik burada gösterilecek -->
+    </div>
+
+    <div class="alert alert-warning mt-4">
+      <b>Hint:</b> Bu içerik, arka planda sunucu tarafından <code>/SSRF</code> endpointine yapılan bir POST isteği ile getirilir.<br>
+      Burp Suite ile bu isteği yakalayarak <code>url</code> parametresini değiştirebilir, SSRF zafiyetini test edebilirsin!
+    </div>
+  </div>
+</div>
+
+<script>
+  document.getElementById('ssrfForm').addEventListener('submit', function (e) {
+    e.preventDefault();
+    const formData = new FormData(this);
+
+    fetch('{{ url_for("ssrf") }}', {
+      method: 'POST',
+      body: formData
+    })
+    .then(response => response.text())
+    .then(data => {
+      document.getElementById('result').innerHTML = data;
+    })
+    .catch(error => {
+      document.getElementById('result').innerText = 'Error: ' + error;
+    });
+  });
+</script>
+{% endblock %}

@@ -1,0 +1,29 @@
+{% extends "layout.html" %}
+{% block content %}
+<div class="row justify-content-center">
+  <div class="col-md-7">
+    <div class="card shadow-sm mb-4">
+      <div class="card-body pb-2">
+        <div class="d-flex align-items-center mb-3">
+          <img src="{{ url_for('static', filename='profile.jpg') }}" alt="User" width="48" height="48" class="rounded-circle me-3 border" onerror="this.style.display='none'">
+          <div>
+            <span class="fw-bold">{{ username }}</span>
+            <span class="text-muted ms-2" style="font-size: 0.95em;">IDOR Level 2</span>
+          </div>
+        </div>
+        <div class="mb-3">
+          <h5 class="mb-2">🔐 Sensitive User Data</h5>
+          <p><strong>ID:</strong> {{ id }}</p>
+          <p><strong>Username:</strong> {{ username }}</p>
+          <p><strong>Password:</strong> {{ password }}</p>
+          <p><strong>Email:</strong> {{ email }}</p>
+          <p><strong>Credit Card:</strong> {{ credit_card }}</p>
+        </div>
+      </div>
+      <div class="card-footer bg-white pt-3 pb-3 text-muted text-center" style="font-size: 0.95em;">
+       Do not share these informations with anyone!<br>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

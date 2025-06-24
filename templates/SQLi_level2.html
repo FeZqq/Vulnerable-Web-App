@@ -1,0 +1,24 @@
+{% extends "layout.html" %}
+{% block content %}
+<div class="row justify-content-center">
+  <div class="col-md-7">
+    <div class="card shadow-sm mb-4">
+      <div class="card-body">
+        <h4 class="mb-3">Product Search</h4>
+        <form method="GET" class="mb-3">
+          <div class="input-group">
+            <input type="text" name="id" class="form-control" placeholder="Enter product ID..." value="{{ request.args.get('id', '') }}">
+            <button class="btn btn-primary" type="submit">Check</button>
+          </div>
+        </form>
+        {% if result is not none %}
+          <div class="alert alert-info mt-3">{{ result }}</div>
+        {% endif %}
+        <div class="alert alert-warning mt-4" role="alert">
+          <strong>Hint:</strong> Try to extract data using Blind SQL Injection techniques!
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
